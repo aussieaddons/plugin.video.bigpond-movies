@@ -12,7 +12,6 @@ sys.path.append(BASE_RESOURCE_PATH)
 
 import telstra_auth  # noqa: E402
 import play  # noqa: E402
-import matches  # noqa: E402
 import menu  # noqa: E402
 import categories  # noqa: E402
 
