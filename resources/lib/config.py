@@ -1,11 +1,11 @@
 # flake8: noqa
 import version
 
-NAME = 'NRL Live'
-ADDON_ID = 'plugin.video.nrl-live'
+NAME = 'Bigpond Movies'
+ADDON_ID = 'plugin.video.bigpond-movies'
 VERSION = version.VERSION
 
-GITHUB_API_URL = 'https://api.github.com/repos/glennguy/plugin.video.nrl-live'
+GITHUB_API_URL = 'https://api.github.com/repos/glennguy/plugin.video.bigpond-movies'
 ISSUE_API_URL = GITHUB_API_URL + '/issues'
 ISSUE_API_AUTH = 'eGJtY2JvdDo1OTQxNTJjMTBhZGFiNGRlN2M0YWZkZDYwZGQ5NDFkNWY4YmIzOGFj'
 GIST_API_URL = 'https://api.github.com/gists'
@@ -13,13 +13,6 @@ GIST_API_URL = 'https://api.github.com/gists'
 MAX_LIVEQUAL = 4
 MAX_REPLAYQUAL = 7
 
-
-
-# url to send our Digital Pass info to
-LOGIN_URL = ('https://signon-live-nrl.yinzcam.com/V1/Auth/Subscription?ff=mobile'
-            '&mnc=1&app_version=3.3.0&carrier=&version=4.7'
-            '&width=1080&height=1776&os_version=6.0&mcc=505'
-            '&application=NRL_LIVE&os=Android')
 
 # XML template to insert username and password into
 LOGIN_DATA ='<Subscriber><Type>TDI</Type><User>{0}</User><Password>{1}</Password><Email>{0}</Email><AdobeCheckResult>0</AdobeCheckResult></Subscriber>'

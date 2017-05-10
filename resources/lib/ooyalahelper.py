@@ -1,21 +1,13 @@
 import requests
 import urllib
-import StringIO
-import xml.etree.ElementTree as ET
 import json
-import ssl
 import base64
 import config
 import utils
 import classes
 import xbmcaddon
 import telstra_auth
-import time
-from datetime import datetime, timedelta
-from exception import BigPondException
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
-from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.poolmanager import PoolManager
 
 # Ignore InsecureRequestWarning warnings
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
@@ -67,4 +59,3 @@ def get_dash_playlist(video_id):
     embed_token = get_embed_token(video_id)
     authorize_url = config.AUTH_URL.format(config.PCODE, video_id, embed_token)
     return get_secure_token(authorize_url, video_id)
-

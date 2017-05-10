@@ -1,18 +1,10 @@
-import xml.etree.ElementTree as ET
 import classes
-import urllib2
 import utils
 import config
 import requests
-import ssl
-import ooyalahelper
 import json
 import telstra_auth
-
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
-from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.poolmanager import PoolManager
-
 # Ignore InsecureRequestWarning warnings
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 session = requests.Session()
@@ -30,7 +22,7 @@ def list_movies():
         p.desc = item.get('shortSynopsis')
         p.thumb = item['images'].get('slickUrl')
         p.fanart = item['images'].get('keyartUrl')
-        if item['renditions'].get('isHD') == True:
+        if item['renditions'].get('isHD') is True:
             p.qual = 'HD'
         else:
             p.qual = 'SD'
@@ -39,6 +31,7 @@ def list_movies():
                 p.video_id = rendition.get('embedCode')
         listing.append(p)
     return listing
+
 
 def list_tv_shows():
     data = get_url(config.QUERY_URL.format('mylibrary'))
@@ -53,7 +46,8 @@ def list_tv_shows():
         p.series_id = item.get('id')
         listing.append(p)
     return listing
-    
+
+
 def list_episodes(asset):
     data = get_url(config.SERIES_URL.format(asset))
     listing = []
@@ -65,7 +59,7 @@ def list_episodes(asset):
                 p.title = x['consume'][0].get('assetName')
                 p.title += ' ' + x['consume'][0].get('renditionType')
                 p.video_id = x['consume'][0].get('embedCode')
-                p.qual = 'SD' #  need to get actual value 
+                p.qual = 'SD'  # need to get actual value
                 listing.append(p)
     return listing
 
@@ -92,10 +86,11 @@ def list_trailers(category):
 
 def get_url(url):
     """ retrieve our json file for processiqng"""
-    token = telstra_auth.get_user_token(session)
+    telstra_auth.get_user_token(session)
     utils.log('Fetching URL: {0}'.format(url))
     res = session.get(url)
     return json.loads(res.text)
+
 
 def get_metadata(p, item):
     p.title = utils.ensure_ascii(item.get('name'))
@@ -105,7 +100,6 @@ def get_metadata(p, item):
     p.fanart = item['images'].get('keyartUrl')
     p.genre = item.get('genres')
     p.director = item.get('directors')
-    
     p.duration = item.get('duration')
     p.year = item.get('productionYear')
     p.cast = item.get('actors')

@@ -1,32 +1,21 @@
 import requests
 import json
-import urlparse
 import urllib
 import config
-import re
-import ssl
 import utils
-import classes
 import time
 import xbmcaddon
-import xbmcgui
 try:
     import StorageServer
 except:
     from storageserverdummy import StorageServer
-from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
-
-
 
 # Ignore InsecureRequestWarning warnings
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 cache = StorageServer.StorageServer(config.ADDON_ID, 1)
 addon = xbmcaddon.Addon()
-
-
-
 
 
 def clear_token():
@@ -40,16 +29,12 @@ def get_new_token(session):
     utils.log('Retrieving new user token')
     username = addon.getSetting('LIVE_USERNAME')
     password = addon.getSetting('LIVE_PASSWORD')
-
     session.headers = config.BIGPOND_HEADERS
-    #session.cookies.update(json.loads(cookies))
-    #session.headers = config.APIGEE_HEADERS
-
     url = config.BIGPOND_URL.format(username, password)
     auth_resp = session.post(url)  # make sure not to log this!!
     auth_json = json.loads(auth_resp.text)
     artifact = auth_json['data'].get('artifactValue')
-    
+
     session.headers = config.APIGEE_HEADERS
     url = config.APIGEE_URL.format(urllib.quote(artifact))
     token_resp = session.get(url)

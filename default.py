@@ -12,9 +12,9 @@ sys.path.append(BASE_RESOURCE_PATH)
 
 import telstra_auth  # noqa: E402
 import play  # noqa: E402
-import matches  # noqa: E402
 import menu  # noqa: E402
 import categories  # noqa: E402
+import wvhelper  # noqa: E402
 
 _url = sys.argv[0]
 _handle = int(sys.argv[1])
@@ -39,7 +39,6 @@ def router(paramstring):
                     addon.openSettings()
                 else:
                     menu.make_content_list(params)
-            
             elif params['action'] == 'librarylist':
                 if params['category'] == 'movies':
                     menu.make_content_list(params)
@@ -47,10 +46,15 @@ def router(paramstring):
                     menu.list_series(params)
             elif params['action'] == 'listseries':
                 menu.make_content_list(params)
-            elif params['action'] in ['listfeatured', 'listmovies', 'listepisodes', 'listThanks Thursdays']:
+            elif params['action'] in ['listfeatured', 'listmovies',
+                                      'listepisodes', 'listThanks Thursdays']:
                 play.play_video(params)
             elif params['action'] == 'cleartoken':
                 telstra_auth.clear_token()
+            elif params['action'] == 'reinstall_widevine_cdm':
+                wvhelper.get_widevinecdm()
+            elif params['action'] == 'reinstall_ssd_wv':
+                wvhelper.get_ssd_wv()
     else:
         categories.list_categories()
 

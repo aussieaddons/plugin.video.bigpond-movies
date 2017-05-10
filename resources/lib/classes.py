@@ -21,9 +21,11 @@ import ssl
 from requests.packages.urllib3.poolmanager import PoolManager
 from requests.adapters import HTTPAdapter
 
+
 class movie():
-    """ object that contains all the info for a particular match
-        eventually will try to make this script more OO"""
+    """
+    movie/tv show info container
+    """
     def __init__(self):
         self.video_id = None
         self.qual = None
@@ -58,10 +60,13 @@ class movie():
         params = urlparse.parse_qsl(url)
         for item in params.keys():
             setattr(self, item, urllib.unquote_plus(params[item]))
-    
+
     def get_art(self):
-        return {'fanart': self.fanart}
-    
+        d = {}
+        if self.fanart:
+            d['fanart'] = urllib.unquote_plus(self.fanart)
+        return d
+
     def get_info(self):
         d = {}
         if self.genre:
@@ -69,17 +74,15 @@ class movie():
         if self.shortdesc:
             d['plotoutline'] = self.shortdesc
         if self.longdesc:
-            d['plot'] = self.shortdesc
+            d['plot'] = self.longdesc
         if self.director:
             d['director'] = ', '.join(x for x in self.director)
         if self.cast:
             d['cast'] = [x['name'] for x in self.cast]
-        #if self.duration:
-        #    d['duration'] = str(self.duration//60)
         if self.year:
-            d['year'] = self.year   
+            d['year'] = self.year
         return d
-    
+
     def get_stream_info(self):
         d = {}
         d['codec'] = 'h264'

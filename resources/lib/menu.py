@@ -1,7 +1,6 @@
 import xbmcgui
 import xbmcplugin
 import sys
-import config
 import utils
 import comm
 
@@ -16,6 +15,8 @@ def make_content_list(params):
     utils.log('Category is: {0}'.format(category))
     if category == 'episodes':
         content = comm.list_episodes(params['series_id'])
+    elif category == 'movies':
+        content = comm.list_movies()
     elif category == 'TV Shows':
         content = comm.list_tv_shows()
     elif category == 'Thanks Thursdays':
@@ -38,17 +39,19 @@ def make_content_list(params):
     xbmcplugin.addDirectoryItems(_handle, listing, len(listing))
     xbmcplugin.endOfDirectory(_handle)
 
+
 def list_series(params):
     """ list tv show series that have been purchased"""
     listing = []
     content = comm.list_tv_shows()
-    
+
     for p in content:
         li = xbmcgui.ListItem(label=str(p.title), iconImage=p.thumb,
                               thumbnailImage=p.thumb)
-        url = '{0}?action=listseries{1}&category=episodes'.format(_url, p.make_kodi_url())
+        url = '{0}?action=listseries{1}&category=episodes'.format(
+            _url, p.make_kodi_url())
         is_folder = True
-        li.setArt({'fanart': p.fanart})
+        li.setArt(p.get_art())
         listing.append((url, li, is_folder))
 
     xbmcplugin.addDirectoryItems(_handle, listing, len(listing))
@@ -62,6 +65,6 @@ def list_library(params):
         url = '{0}?action=librarylist&category={1}'.format(_url, item.lower())
         is_folder = True
         listing.append((url, li, is_folder))
-    
+
     xbmcplugin.addDirectoryItems(_handle, listing, len(listing))
     xbmcplugin.endOfDirectory(_handle)

@@ -24,13 +24,17 @@ def play_video(params):
             url = dash_stream['dash_url']
             play_item = xbmcgui.ListItem(path=url)
             play_item.setProperty('inputstream.adaptive.manifest_type', 'mpd')
-            play_item.setProperty('inputstream.adaptive.license_type', 'com.widevine.alpha')
-            play_item.setProperty('inputstream.adaptive.license_key', dash_stream['wv_lic']+'|Content-Type=application%2Fx-www-form-urlencoded|A{SSM}|')
+            play_item.setProperty(
+                'inputstream.adaptive.license_type', 'com.widevine.alpha')
+            play_item.setProperty(
+                'inputstream.adaptive.license_key',
+                dash_stream['wv_lic']+('|Content-Type=application%2F'
+                                       'x-www-form-urlencoded|A{SSM}|'))
             xbmcplugin.setResolvedUrl(_handle, True, listitem=play_item)
         else:
-            xbmcplugin.setResolvedUrl(_handle, True, xbmcgui.ListItem(path=None))
+            xbmcplugin.setResolvedUrl(_handle, True,
+                                      xbmcgui.ListItem(path=None))
             return
 
     except Exception as e:
-        #raise e
         utils.handle_error('', e)

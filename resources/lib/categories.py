@@ -9,7 +9,6 @@ _url = sys.argv[0]
 
 def list_categories():
     listing = []
-    
     for category in config.CATEGORIES:
         li = xbmcgui.ListItem(category)
         urlString = '{0}?action=listcategories&category={1}'
