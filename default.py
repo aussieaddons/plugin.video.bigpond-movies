@@ -3,6 +3,7 @@ import sys
 import xbmc
 import xbmcgui
 import xbmcaddon
+import drmhelper
 from urlparse import parse_qsl
 
 addon = xbmcaddon.Addon()
@@ -14,7 +15,6 @@ import telstra_auth  # noqa: E402
 import play  # noqa: E402
 import menu  # noqa: E402
 import categories  # noqa: E402
-import wvhelper  # noqa: E402
 
 _url = sys.argv[0]
 _handle = int(sys.argv[1])
@@ -52,9 +52,9 @@ def router(paramstring):
             elif params['action'] == 'cleartoken':
                 telstra_auth.clear_token()
             elif params['action'] == 'reinstall_widevine_cdm':
-                wvhelper.get_widevinecdm()
+                drmhelper.get_widevinecdm()
             elif params['action'] == 'reinstall_ssd_wv':
-                wvhelper.get_ssd_wv()
+                drmhelper.get_ssd_wv()
     else:
         categories.list_categories()
 

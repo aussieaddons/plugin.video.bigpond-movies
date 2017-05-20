@@ -18,8 +18,8 @@ def play_video(params):
         if params['dummy'] == 'True':
             return
     try:
-        import wvhelper
-        if wvhelper.check_inputstream():
+        import drmhelper
+        if drmhelper.check_inputstream():
             dash_stream = ooyalahelper.get_dash_playlist(params['video_id'])
             url = dash_stream['dash_url']
             play_item = xbmcgui.ListItem(path=url)
