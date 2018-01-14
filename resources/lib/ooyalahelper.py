@@ -1,19 +1,15 @@
-import requests
-import urllib
-import json
 import base64
 import config
-import utils
-import classes
-import xbmcaddon
+import json
 import telstra_auth
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
+import urllib
+import xbmcaddon
 
-# Ignore InsecureRequestWarning warnings
-requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
-session = requests.Session()
-session.verify = False
-session.mount("https://", classes.TLSv1Adapter(max_retries=5))
+from aussieaddonscommon.exceptions import AussieAddonsException
+from aussieaddonscommon import session as custom_session
+from aussieaddonscommon import utils
+
+session = custom_session.Session()
 addon = xbmcaddon.Addon()
 
 
@@ -43,10 +39,12 @@ def get_secure_token(secure_url, videoId):
             auth_msg = parsed_json['authorization_data'][videoId]['message']
             if auth_msg == 'unauthorizedlocation':
                 country = parsed_json['user_info']['country']
-                raise Exception('Unauthorised location for streaming. '
-                                'Detected location is: {0}. '
-                                'Please check VPN/smart DNS settings '
-                                ' and try again'.format(country))
+                raise AussieAddonsException('Unauthorised location for '
+                                            'streaming. '
+                                            'Detected location is: {0}. '
+                                            'Please check VPN/smart DNS '
+                                            'settings and try again'
+                                            ''.format(country))
         except Exception as e:
             raise e
     return {'dash_url': base64.b64decode(dash_url), 'wv_lic': wv_lic}

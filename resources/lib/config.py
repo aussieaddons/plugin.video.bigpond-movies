@@ -1,9 +1,7 @@
 # flake8: noqa
-import version
 
 NAME = 'Bigpond Movies'
 ADDON_ID = 'plugin.video.bigpond-movies'
-VERSION = version.VERSION
 
 GITHUB_API_URL = 'https://api.github.com/repos/glennguy/plugin.video.bigpond-movies'
 ISSUE_API_URL = GITHUB_API_URL + '/issues'
@@ -33,13 +31,13 @@ FEATURED_URL = 'https://telstramedia-prod.apigee.net/v2/bpm/screens/featured?dev
 
 SERIES_URL = 'https://telstramedia-prod.apigee.net/v2/bpm/screens/purchases/assets/{0}?deviceType=android'
 
+SYNOPSIS_URL = 'https://telstramedia-prod.apigee.net/v2/bpm/screens/synopsis/assets/{0}?deviceType=android'
 
 # ooyala provider indentifier code used in contructing request uris
 PCODE = 'IzMmMyOqAXu_eSOyLuUx5jFPYMVU'
 
 CATEGORIES = ['My Library',
-              'Thanks Thursdays',
-              'Featured',
+              'Featured Movie Trailers',
               'Settings']
 
 # New auth config for 2017

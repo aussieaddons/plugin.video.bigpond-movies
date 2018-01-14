@@ -1,19 +1,18 @@
-import requests
-import json
-import urllib
 import config
-import utils
+import json
+import requests
 import time
+import urllib
 import xbmcaddon
+
+from datetime import datetime, timedelta
+from aussieaddonscommon import utils
+
 try:
     import StorageServer
 except:
     from storageserverdummy import StorageServer
-from datetime import datetime, timedelta
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
-# Ignore InsecureRequestWarning warnings
-requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 cache = StorageServer.StorageServer(config.ADDON_ID, 1)
 addon = xbmcaddon.Addon()
 
@@ -31,7 +30,7 @@ def get_new_token(session):
     password = addon.getSetting('LIVE_PASSWORD')
     session.headers = config.BIGPOND_HEADERS
     url = config.BIGPOND_URL.format(username, password)
-    auth_resp = session.post(url)  # make sure not to log this!!
+    auth_resp = session.post(url, logging=False)  # make sure not to log this!!
     auth_json = json.loads(auth_resp.text)
     artifact = auth_json['data'].get('artifactValue')
 

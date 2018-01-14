@@ -17,9 +17,6 @@
 import urlparse
 import unicodedata
 import urllib
-import ssl
-from requests.packages.urllib3.poolmanager import PoolManager
-from requests.adapters import HTTPAdapter
 
 
 class movie():
@@ -95,11 +92,3 @@ class movie():
             d['width'] = 960
             d['height'] = 540
         return d
-
-
-class TLSv1Adapter(HTTPAdapter):
-    def init_poolmanager(self, connections, maxsize, block=False):
-        self.poolmanager = PoolManager(num_pools=connections,
-                                       maxsize=maxsize,
-                                       block=block,
-                                       ssl_version=ssl.PROTOCOL_TLSv1)

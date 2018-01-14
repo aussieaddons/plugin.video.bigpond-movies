@@ -14,7 +14,7 @@ sys.path.append(BASE_RESOURCE_PATH)
 import telstra_auth  # noqa: E402
 import play  # noqa: E402
 import menu  # noqa: E402
-import categories  # noqa: E402
+from aussieaddonscommon import utils  # noqa: E402
 
 _url = sys.argv[0]
 _handle = int(sys.argv[1])
@@ -30,6 +30,7 @@ def router(paramstring):
     :param paramstring:
     """
     params = dict(parse_qsl(paramstring))
+    utils.log('Running addon with params: {0}'.format(params))
     if paramstring:
         if paramstring != 'content_type=video':
             if params['action'] == 'listcategories':
@@ -46,8 +47,7 @@ def router(paramstring):
                     menu.list_series(params)
             elif params['action'] == 'listseries':
                 menu.make_content_list(params)
-            elif params['action'] in ['listfeatured', 'listmovies',
-                                      'listepisodes', 'listThanks Thursdays']:
+            elif params['action'] == 'listplayable':
                 play.play_video(params)
             elif params['action'] == 'cleartoken':
                 telstra_auth.clear_token()
@@ -56,13 +56,13 @@ def router(paramstring):
             elif params['action'] == 'reinstall_ssd_wv':
                 drmhelper.get_ssd_wv()
     else:
-        categories.list_categories()
+        menu.list_categories()
 
 
 if __name__ == '__main__':
     if addon.getSetting('firstrun') == 'true':
-        xbmcgui.Dialog().ok(addonname, ('Please enter your NRL Digital '
-                                        'Pass (Telstra ID) username and '
+        xbmcgui.Dialog().ok(addonname, ('Please enter your Telstra ID '
+                                        'username and '
                                         'password to access the content in '
                                         'this service.'))
         addon.openSettings()

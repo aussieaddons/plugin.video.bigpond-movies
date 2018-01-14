@@ -1,15 +1,12 @@
 import classes
-import utils
 import config
-import requests
 import json
 import telstra_auth
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
-# Ignore InsecureRequestWarning warnings
-requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
-session = requests.Session()
-session.verify = False
-session.mount("https://", classes.TLSv1Adapter(max_retries=5))
+
+from aussieaddonscommon import session as custom_session
+from aussieaddonscommon import utils
+
+session = custom_session.Session()
 
 
 def list_movies():
@@ -50,17 +47,27 @@ def list_tv_shows():
 
 def list_episodes(asset):
     data = get_url(config.SERIES_URL.format(asset))
+    metadata = get_url(config.SYNOPSIS_URL.format(asset))
     listing = []
     series = data['content'].get('buttons')
     for item in series:
         for x in series[item]:
             if x.get('type') == 'play':
-                p = classes.movie()
-                p.title = x['consume'][0].get('assetName')
-                p.title += ' ' + x['consume'][0].get('renditionType')
-                p.video_id = x['consume'][0].get('embedCode')
-                p.qual = 'SD'  # need to get actual value
-                listing.append(p)
+                for season in metadata['content'].get('seasons'):
+                    for entry in season.get('episodes'):
+                        if (entry.get('id') ==
+                           int(x['consume'][0].get('assetId'))):
+                            utils.log('matched')
+                            p = classes.movie()
+                            p.video_id = x['consume'][0].get('embedCode')
+                            p.qual = x['consume'][0].get('renditionType')
+                            get_metadata(p, entry)
+                            p.title = 'S{0:02d}E{1:02d} - {2} {3}'.format(
+                                season.get('seasonNumber'),
+                                entry.get('episodeNumber'),
+                                entry.get('name'),
+                                x['consume'][0].get('renditionType'))
+                            listing.append(p)
     return listing
 
 
@@ -87,7 +94,6 @@ def list_trailers(category):
 def get_url(url):
     """ retrieve our json file for processiqng"""
     telstra_auth.get_user_token(session)
-    utils.log('Fetching URL: {0}'.format(url))
     res = session.get(url)
     return json.loads(res.text)
 

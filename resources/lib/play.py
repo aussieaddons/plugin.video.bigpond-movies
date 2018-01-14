@@ -1,9 +1,10 @@
+import ooyalahelper
+import sys
 import xbmcaddon
 import xbmcgui
 import xbmcplugin
-import sys
-import ooyalahelper
-import utils
+
+from aussieaddonscommon import utils
 
 addon = xbmcaddon.Addon()
 _handle = int(sys.argv[1])
@@ -36,5 +37,5 @@ def play_video(params):
                                       xbmcgui.ListItem(path=None))
             return
 
-    except Exception as e:
-        utils.handle_error('', e)
+    except Exception:
+        utils.handle_error('Unable to play video')
