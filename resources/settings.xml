@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <settings>
   <category label="32000">
-	<setting label="32031" type="bool"	 id="firstrun" default="true" visible="false"/>
+	<setting label="32031" type="bool"id="firstrun" default="true" visible="false"/>
 	<setting label="32020" type="text" id="LIVE_USERNAME" default=""/>
-    <setting label="32030" type="text" id="LIVE_PASSWORD" option="hidden"  enable="!eq(-10,)" default=""/>
+    <setting label="32030" type="text" id="LIVE_PASSWORD" option="hidden" default=""/>
   </category>
   <category label="32001">
     <setting label="32032" type="action" action="RunPlugin(plugin://plugin.video.bigpond-movies/?action=cleartoken)"/>
